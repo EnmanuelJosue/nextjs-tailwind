@@ -1,29 +1,34 @@
-import useFetch from '@hooks/useFetch';
-import { Chart } from '@common/Chart';
-const PRODUCT_LIMIT = 10;
-const PRODUCT_OFFSET = 0;
+import React, { useState } from 'react';
+import { CheckIcon } from '@heroicons/react/solid';
+import Modal from '@common/Modal';
 
-export default function Dashboard() {
-  const { data: products, limit, paginateBack, paginateFront, offset } = useFetch(PRODUCT_LIMIT, PRODUCT_OFFSET);
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ');
+}
 
-  const categoryNames = products?.map((product) => product.category);
-  const categoryCount = categoryNames?.map((category) => category.name);
+export default function products() {
+  const [open, setOpen] = useState(false);
+  const [products, setProducts] = useState([]);
 
-  const countOccurences = (arr) => arr.reduce((prev, curr) => ((prev[curr] = ++prev[curr] || 1), prev), {});
-
-  const data = {
-    datasets: [
-      {
-        label: 'Categories',
-        data: countOccurences(categoryCount),
-        borderWidth: 2,
-        backgroundColor: ['#ffbb11', '#c0c0c0', '#50af95', '#f3ba2f', '#2a71d0'],
-      },
-    ],
-  };
   return (
     <>
-      <Chart className="mb-8 mt-2" chartData={data} />
+      <div className="lg:flex lg:items-center lg:justify-between mb-8">
+        <div className="flex-1 min-w-0">
+          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">List of products</h2>
+        </div>
+        <div className="mt-5 flex lg:mt-0 lg:ml-4">
+          <span className="sm:ml-3">
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              <CheckIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+              Add Product
+            </button>
+          </span>
+        </div>
+      </div>
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -89,38 +94,9 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <div className="py-2">
-        <div>
-          <p className="text-sm text-gray-700">
-            Showing
-            <span className="font-medium mx-1">{limit}</span>
-            to page
-            <span className="font-medium"> {offset} </span>
-          </p>
-        </div>
-        <nav className="block"></nav>
-        <div>
-          <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-            <button
-              onClick={() => {
-                paginateBack();
-              }}
-              className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-            >
-              <span>Previous</span>
-            </button>
-
-            <button
-              onClick={() => {
-                paginateFront();
-              }}
-              className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-            >
-              <span>Next</span>
-            </button>
-          </nav>
-        </div>
-      </div>
+      <Modal open={open} setOpen={setOpen}>
+        <h1>Hola mundo</h1>
+      </Modal>
     </>
   );
 }

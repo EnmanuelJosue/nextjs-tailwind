@@ -3,7 +3,6 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XCircleIcon } from '@heroicons/react/solid';
 
 export default function Modal({ open, setOpen, cancelButtonRef, children }) {
-  console.log('hola modla');
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={cancelButtonRef} onClose={setOpen}>

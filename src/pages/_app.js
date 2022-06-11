@@ -5,8 +5,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <ProviderAuth>
-        <MainLayout />
-        <Component {...pageProps} />
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
       </ProviderAuth>
     </>
   );
