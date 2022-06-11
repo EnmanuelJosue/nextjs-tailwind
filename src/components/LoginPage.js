@@ -1,16 +1,31 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 import { LockClosedIcon } from '@heroicons/react/solid';
+import { useAuth } from '@hooks/useAuth';
+import Modal from '@common/Modal';
 
 export default function LoginPage() {
+  const [open, setOpen] = useState(false);
+  const cancelButtonRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const auth = useAuth();
+  const router = useRouter();
 
   const submitHandler = (event) => {
     event.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
-    console.log(email, password);
+    auth
+      .signIn(email, password)
+      .then(() => {
+        router.push('/dashboard');
+      })
+      .catch((e) => {
+        console.log('error', e);
+        setOpen(true);
+      });
   };
 
   return (
@@ -65,7 +80,7 @@ export default function LoginPage() {
               </div>
 
               <div className="text-sm">
-                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
                   Forgot your password?
                 </a>
               </div>
@@ -85,6 +100,13 @@ export default function LoginPage() {
           </form>
         </div>
       </div>
+      {open && (
+        <Modal open={true} setOpen={setOpen} cancelButtonRef={cancelButtonRef}>
+          <div className="border border-red-400 rounded-b bg-red-100 px-4 pb-3 text-red-700">
+            <h1>Ups problemas, algo salio mal con el login, usuario o password incorrectos</h1>
+          </div>
+        </Modal>
+      )}
     </>
   );
 }
