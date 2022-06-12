@@ -1,10 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { addProduct } from '@services/api/products';
-export default function FormProduct() {
+export default function FormProduct({ setOpen, setAlert }) {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
@@ -15,9 +14,25 @@ export default function FormProduct() {
       price: parseInt(data.price),
       images: [data.images[0].name],
     };
-    addProduct(newData).then((response) => {
-      console.log(response);
-    });
+    addProduct(newData)
+      .then((response) => {
+        console.log(response);
+        setAlert({
+          active: true,
+          message: 'Product added successfully',
+          type: 'success',
+          autoClose: false,
+        });
+        setOpen(false);
+      })
+      .catch((err) => {
+        setAlert({
+          active: true,
+          message: err.message,
+          type: 'error',
+          autoClose: false,
+        });
+      });
   };
   // const handleSubmit = (event) => {
   //   event.preventDefault();
