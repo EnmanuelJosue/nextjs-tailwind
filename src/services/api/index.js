@@ -9,6 +9,7 @@ const endpoints = {
     getAllProducts: `${API}/api/${VERSION}/products`,
     getProductsByPagination: (limit, offset) => `${API}/api/${VERSION}/products?limit=${limit}&offset=${offset}`,
     getProduct: (id) => `${API}/api/${VERSION}/products/${id}`,
+    addProduct: `${API}/api/${VERSION}/products`,
   },
   users: {
     getAllUsers: `${API}/api/${VERSION}/users`,

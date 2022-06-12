@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-
+import { addProduct } from '@services/api/products';
 export default function FormProduct() {
   const {
     register,
@@ -7,7 +7,18 @@ export default function FormProduct() {
     watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    const newData = {
+      description: data.description,
+      title: data.title,
+      categoryId: parseInt(data.category),
+      price: parseInt(data.price),
+      images: [data.images[0].name],
+    };
+    addProduct(newData).then((response) => {
+      console.log(response);
+    });
+  };
   // const handleSubmit = (event) => {
   //   event.preventDefault();
   //   const formData = new FormData(formRef.current);
