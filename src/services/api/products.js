@@ -11,4 +11,10 @@ const addProduct = async (body) => {
   const response = await axios.post(endpoints.products.addProduct, body, config);
   return response.data;
 };
-export { addProduct };
+
+const deleteProduct = async (id) => {
+  const response = await axios.delete(endpoints.products.deleteProduct(id));
+  return response.data;
+};
+
+export { addProduct, deleteProduct };
